@@ -1,0 +1,25 @@
+﻿@model NewVidly.Models.Customer
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var birthDate = Model.Birthdate?.ToShortDateString();
+}
+
+
+<h2>@Model.Name</h2>
+
+<ul class="list-group">
+    <li class="list-group-item">
+        Membership Type: @Model.MembershipType.Name
+    </li>
+    @if (birthDate != null)
+    {
+        <li class="list-group-item">
+            Birthdate: @birthDate
+        </li>
+    }
+</ul>
+
