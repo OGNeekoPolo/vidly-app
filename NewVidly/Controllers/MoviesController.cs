@@ -23,11 +23,14 @@ namespace NewVidly.Controllers
         {
             _context.Dispose();
         }
-        
+
         // GET: Movies
         public ActionResult Index()
         {
-            return View();
+            if (User.IsInRole(RoleName.CanManageMovies))
+                return View("List");
+
+            return View("ReadOnlyList");
         }
 
         public ActionResult Details(int id)
@@ -44,6 +47,7 @@ namespace NewVidly.Controllers
 
         }
 
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult New()
         {
             var movieGenres = _context.MovieGenres.ToList();
@@ -58,6 +62,7 @@ namespace NewVidly.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult Save(Movie movie)
         {
             if (!ModelState.IsValid)
@@ -102,6 +107,8 @@ namespace NewVidly.Controllers
 
         }
 
+        [HttpPut]
+        [Authorize(Roles = RoleName.CanManageMovies)]
         public ActionResult Edit(int id)
         {
             var movie = _context.Movies
